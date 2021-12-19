@@ -31,18 +31,27 @@ int main() {
 				switch (event.key.code) {
 				case (sf::Keyboard::A):
 				{
-					busRotate[1] += 0.1;
+					busMove[0] -= 0.1;
+					busRotate[1] -= 0.1;
 					break;
 				}
 				case (sf::Keyboard::D):
 				{
-					busRotate[1] -= 0.1;
+					busMove[0] += 0.1;
+					busRotate[1] += 0.1;
 					break;
 				}
 				default: break;
 				}
 			}
 		}
+
+		if (busRotate[1] < -3.14f && std::abs(busRotate[1] + 3.14) > 0.1f)
+			busRotate[1] += 0.03f;
+		else if (busRotate[1] > -3.14f && std::abs(busRotate[1] + 3.14) > 0.1f)
+			busRotate[1] -= 0.03f;
+		if (std::abs(busMove[1] + 0.25) < 0.01f)
+			busMove[1] += 1.0f;
 
 		road1Move[2] -= 0.05;
 		road2Move[2] -= 0.05;
@@ -53,7 +62,7 @@ int main() {
 			road2Move[2] = 30;
 		if (std::abs(road3Move[2] - 30) < 0.001)
 			road3Move[2] = 50;
-		std::cout << road2Move[2] << "\n";
+
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

@@ -16,8 +16,11 @@ void ReleaseShader() {
 void ReleaseVBO()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glDeleteVertexArrays(1, &road1VAO);
-	glDeleteBuffers(1, &road1VBO);
+	glDeleteVertexArrays(1, &roadVAO);
+	glDeleteBuffers(1, &roadVBO);
+
+	glDeleteVertexArrays(1, &busVAO);
+	glDeleteBuffers(1, &busVBO);
 }
 
 void Release() {

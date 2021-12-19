@@ -13,23 +13,44 @@
 #include "vertShader.h"
 #include "fragShader.h"
 
-
+int road_count = 0;
+int bus_count = 0;
 
 void InitVBO()
 {
-	std::vector<float> pos_tex = InitializeVBO("models/road.obj");
+	//road
+	std::vector<float> pos_tex = InitializeVBO("models/road.obj", road_count);
 
+	glGenBuffers(1, &roadVBO);
+	glGenVertexArrays(1, &roadVAO);
 
-	//bus
-	glGenBuffers(1, &road1VBO);
-	glGenVertexArrays(1, &road1VAO);
-
-	glBindVertexArray(road1VAO);
+	glBindVertexArray(roadVAO);
 
 	glEnableVertexAttribArray(attribVertex);
 	glEnableVertexAttribArray(attribTex);
 	glEnableVertexAttribArray(attribNormal);
-	glBindBuffer(GL_ARRAY_BUFFER, road1VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, roadVBO);
+	glBufferData(GL_ARRAY_BUFFER, pos_tex.size() * sizeof(GLfloat), pos_tex.data(), GL_STATIC_DRAW);
+
+	glVertexAttribPointer(attribVertex, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(attribTex, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(attribNormal, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(0);
+
+	//bus
+	pos_tex = InitializeVBO("models/bus2.obj", bus_count);
+
+	glGenBuffers(1, &busVBO);
+	glGenVertexArrays(1, &busVAO);
+
+	glBindVertexArray(busVAO);
+
+	glEnableVertexAttribArray(attribVertex);
+	glEnableVertexAttribArray(attribTex);
+	glEnableVertexAttribArray(attribNormal);
+	glBindBuffer(GL_ARRAY_BUFFER, busVBO);
 	glBufferData(GL_ARRAY_BUFFER, pos_tex.size() * sizeof(GLfloat), pos_tex.data(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(attribVertex, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
@@ -102,10 +123,17 @@ void InitShader() {
 		return;
 	}
 
-	unifRoad1Move = glGetUniformLocation(shaderProgram, "move");
-	if (unifRoad1Move == -1)
+	unifMove = glGetUniformLocation(shaderProgram, "move");
+	if (unifMove == -1)
 	{
 		std::cout << "could not bind uniform move" << std::endl;
+		return;
+	}
+
+	unifScale = glGetUniformLocation(shaderProgram, "scale");
+	if (unifScale == -1)
+	{
+		std::cout << "could not bind uniform scale" << std::endl;
 		return;
 	}
 
@@ -114,12 +142,20 @@ void InitShader() {
 
 void InitTexture()
 {
-	const char* bus = "textures/road.png";
-	if (!roadTextureData.loadFromFile(bus))
+	const char* road = "textures/road.png";
+	const char* bus = "textures/bus2.png";
+	if (!busTextureData.loadFromFile(bus))
 	{
+		std::cout << "could not load texture bus";
+		return;
+	}
+	if (!roadTextureData.loadFromFile(road))
+	{
+		std::cout << "could not load texture road";
 		return;
 	}
 	roadTextureHandle = roadTextureData.getNativeHandle();
+	busTextureHandle = busTextureData.getNativeHandle();
 }
 
 

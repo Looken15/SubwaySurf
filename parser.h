@@ -34,7 +34,7 @@ Index surface_to_index(Surface s)
 	return i;
 }
 
-std::vector<float> InitializeVBO(std::string filename)
+std::vector<float> InitializeVBO(std::string filename, int& count)
 {
 	std::vector<Vertex> v;
 	std::vector<Tex> t;
@@ -123,5 +123,6 @@ std::vector<float> InitializeVBO(std::string filename)
 		pos_tex.push_back(n[s[i].vert[2].z - 1].y);
 		pos_tex.push_back(n[s[i].vert[2].z - 1].z);
 	}
+	count = s.size() * 3;
 	return pos_tex;
 }

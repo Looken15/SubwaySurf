@@ -6,6 +6,7 @@ const char* VertexShaderSource = R"(
 
 	uniform vec3 rotate;
 	uniform vec3 move;
+	uniform vec3 scale;
 
     in vec3 coord;
 	in vec2 texcoord;
@@ -18,11 +19,13 @@ const char* VertexShaderSource = R"(
 
     void main() {
 
-		float s = 0.1;
+		float x_scale = scale[0];
+		float y_scale = scale[1];
+		float z_scale = scale[2];
 		vec3 vertex = coord * mat3(
-									s, 0, 0,
-									0, s, 0,
-									0, 0, s);	
+									x_scale, 0, 0,
+									0, y_scale, 0,
+									0, 0, z_scale);	
 
 		float x_angle = rotate[0];
         float y_angle = rotate[1];

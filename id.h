@@ -16,19 +16,17 @@ GLint attribNormal;
 GLint unifTexture;
 
 GLint unifRotate;
+GLint unifMove;
+GLint unifScale;
 
-GLint unifRoad1Move;
-
-GLint unifRoad2Move;
-
-GLuint road1VBO;
-
-GLuint road2VBO;
+GLuint roadVBO;
+GLuint busVBO;
 
 GLint roadTextureHandle;
+GLint busTextureHandle;
 
 sf::Texture roadTextureData;
+sf::Texture busTextureData;
 
-GLuint road1VAO;
-
-GLuint road2VAO;
+GLuint roadVAO;
+GLuint busVAO;
