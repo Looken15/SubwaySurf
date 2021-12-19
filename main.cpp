@@ -53,14 +53,14 @@ int main() {
 		if (std::abs(busMove[1] + 0.25) < 0.01f)
 			busMove[1] += 1.0f;
 
-		road1Move[2] -= 0.05;
-		road2Move[2] -= 0.05;
-		road3Move[2] -= 0.05;
-		if (std::abs(road1Move[2] + 10) < 0.001)
+		road1Move[2] -= 0.07;
+		road2Move[2] -= 0.07;
+		road3Move[2] -= 0.07;
+		if (std::abs(road1Move[2] + 10) < 0.1)
 			road1Move[2] = 10;
-		if (std::abs(road2Move[2] - 10) < 0.001)
+		if (std::abs(road2Move[2] - 10) < 0.1)
 			road2Move[2] = 30;
-		if (std::abs(road3Move[2] - 30) < 0.001)
+		if (std::abs(road3Move[2] - 30) < 0.1)
 			road3Move[2] = 50;
 
 

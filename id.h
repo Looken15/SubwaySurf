@@ -21,12 +21,16 @@ GLint unifScale;
 
 GLuint roadVBO;
 GLuint busVBO;
+GLuint grassVBO;
 
 GLint roadTextureHandle;
 GLint busTextureHandle;
+GLint grassTextureHandle;
 
 sf::Texture roadTextureData;
 sf::Texture busTextureData;
+sf::Texture grassTextureData;
 
 GLuint roadVAO;
 GLuint busVAO;
+GLuint grassVAO;

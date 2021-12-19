@@ -58,6 +58,68 @@ void Draw() {
 	glDrawArrays(GL_TRIANGLES, 0, road_count);
 	glBindVertexArray(0);
 
+	//grassleft1
+	glUniform3fv(unifRotate, 1, grassLeftRotate);
+	glUniform3fv(unifMove, 1, grassLeft1Move);
+	glUniform3fv(unifScale, 1, grassScale);
+	glActiveTexture(GL_TEXTURE0);
+	sf::Texture::bind(&grassTextureData);
+	glUniform1i(unifTexture, 0);
+	glBindVertexArray(grassVAO);
+	glDrawArrays(GL_TRIANGLES, 0, grass_count);
+	glBindVertexArray(0);
+	//grassleft2
+	glUniform3fv(unifRotate, 1, grassLeftRotate);
+	glUniform3fv(unifMove, 1, grassLeft2Move);
+	glUniform3fv(unifScale, 1, grassScale);
+	glActiveTexture(GL_TEXTURE0);
+	sf::Texture::bind(&grassTextureData);
+	glUniform1i(unifTexture, 0);
+	glBindVertexArray(grassVAO);
+	glDrawArrays(GL_TRIANGLES, 0, grass_count);
+	glBindVertexArray(0);
+	//grassleft3
+	glUniform3fv(unifRotate, 1, grassLeftRotate);
+	glUniform3fv(unifMove, 1, grassLeft3Move);
+	glUniform3fv(unifScale, 1, grassScale);
+	glActiveTexture(GL_TEXTURE0);
+	sf::Texture::bind(&grassTextureData);
+	glUniform1i(unifTexture, 0);
+	glBindVertexArray(grassVAO);
+	glDrawArrays(GL_TRIANGLES, 0, grass_count);
+	glBindVertexArray(0);
+
+	//grassright1
+	glUniform3fv(unifRotate, 1, grassRightRotate);
+	glUniform3fv(unifMove, 1, grassRight1Move);
+	glUniform3fv(unifScale, 1, grassScale);
+	glActiveTexture(GL_TEXTURE0);
+	sf::Texture::bind(&grassTextureData);
+	glUniform1i(unifTexture, 0);
+	glBindVertexArray(grassVAO);
+	glDrawArrays(GL_TRIANGLES, 0, grass_count);
+	glBindVertexArray(0);
+	//grassright2
+	glUniform3fv(unifRotate, 1, grassRightRotate);
+	glUniform3fv(unifMove, 1, grassRight2Move);
+	glUniform3fv(unifScale, 1, grassScale);
+	glActiveTexture(GL_TEXTURE0);
+	sf::Texture::bind(&grassTextureData);
+	glUniform1i(unifTexture, 0);
+	glBindVertexArray(grassVAO);
+	glDrawArrays(GL_TRIANGLES, 0, grass_count);
+	glBindVertexArray(0);
+	//grassright3
+	glUniform3fv(unifRotate, 1, grassRightRotate);
+	glUniform3fv(unifMove, 1, grassRight3Move);
+	glUniform3fv(unifScale, 1, grassScale);
+	glActiveTexture(GL_TEXTURE0);
+	sf::Texture::bind(&grassTextureData);
+	glUniform1i(unifTexture, 0);
+	glBindVertexArray(grassVAO);
+	glDrawArrays(GL_TRIANGLES, 0, grass_count);
+	glBindVertexArray(0);
+
 	glUseProgram(0);
 	checkOpenGLerror();
 }

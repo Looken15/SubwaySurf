@@ -15,6 +15,7 @@
 
 int road_count = 0;
 int bus_count = 0;
+int grass_count = 0;
 
 void InitVBO()
 {
@@ -51,6 +52,27 @@ void InitVBO()
 	glEnableVertexAttribArray(attribTex);
 	glEnableVertexAttribArray(attribNormal);
 	glBindBuffer(GL_ARRAY_BUFFER, busVBO);
+	glBufferData(GL_ARRAY_BUFFER, pos_tex.size() * sizeof(GLfloat), pos_tex.data(), GL_STATIC_DRAW);
+
+	glVertexAttribPointer(attribVertex, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(attribTex, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(attribNormal, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(0);
+
+	//grass
+	pos_tex = InitializeVBO("models/grass.obj", grass_count);
+
+	glGenBuffers(1, &grassVBO);
+	glGenVertexArrays(1, &grassVAO);
+
+	glBindVertexArray(grassVAO);
+
+	glEnableVertexAttribArray(attribVertex);
+	glEnableVertexAttribArray(attribTex);
+	glEnableVertexAttribArray(attribNormal);
+	glBindBuffer(GL_ARRAY_BUFFER, grassVBO);
 	glBufferData(GL_ARRAY_BUFFER, pos_tex.size() * sizeof(GLfloat), pos_tex.data(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(attribVertex, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
@@ -144,6 +166,7 @@ void InitTexture()
 {
 	const char* road = "textures/road.png";
 	const char* bus = "textures/bus2.png";
+	const char* grass = "textures/grass.png";
 	if (!busTextureData.loadFromFile(bus))
 	{
 		std::cout << "could not load texture bus";
@@ -154,8 +177,14 @@ void InitTexture()
 		std::cout << "could not load texture road";
 		return;
 	}
+	if (!grassTextureData.loadFromFile(grass))
+	{
+		std::cout << "could not load texture grass";
+		return;
+	}
 	roadTextureHandle = roadTextureData.getNativeHandle();
 	busTextureHandle = busTextureData.getNativeHandle();
+	busTextureHandle = grassTextureData.getNativeHandle();
 }
 
 
