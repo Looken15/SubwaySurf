@@ -16,6 +16,7 @@
 int road_count = 0;
 int bus_count = 0;
 int grass_count = 0;
+int sky_count = 0;
 
 void InitVBO()
 {
@@ -80,8 +81,36 @@ void InitVBO()
 	glVertexAttribPointer(attribNormal, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(0);
 
+	//sky
+	pos_tex = InitializeVBO("models/plane.obj", sky_count);
+	glGenBuffers(1, &skyVBO);
+	glGenVertexArrays(1, &skyVAO);
+
+	glBindVertexArray(skyVAO);
+
+	glEnableVertexAttribArray(attribVertex);
+	glEnableVertexAttribArray(attribTex);
+	glEnableVertexAttribArray(attribNormal);
+	glBindBuffer(GL_ARRAY_BUFFER, skyVBO);
+	glBufferData(GL_ARRAY_BUFFER, pos_tex.size() * sizeof(GLfloat), pos_tex.data(), GL_STATIC_DRAW);
+
+	glVertexAttribPointer(attribVertex, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(attribTex, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(attribNormal, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(0);
+
 	glBindVertexArray(0);
 	checkOpenGLerror();
+}
+
+void InitUniform(GLint& id, const char* name)
+{
+	id = glGetUniformLocation(shaderProgram, name);
+	if (id == -1)
+	{
+		std::cout << "could not bind uniform " << name << std::endl;
+		return;
+	}
 }
 
 void InitShader() {
@@ -131,33 +160,20 @@ void InitShader() {
 		return;
 	}
 
-	unifTexture = glGetUniformLocation(shaderProgram, "textureData");
-	if (unifTexture == -1)
-	{
-		std::cout << "could not bind uniform textureData" << std::endl;
-		return;
-	}
-
-	unifRotate = glGetUniformLocation(shaderProgram, "rotate");
-	if (unifRotate == -1)
-	{
-		std::cout << "could not bind uniform rotate" << std::endl;
-		return;
-	}
-
-	unifMove = glGetUniformLocation(shaderProgram, "move");
-	if (unifMove == -1)
-	{
-		std::cout << "could not bind uniform move" << std::endl;
-		return;
-	}
-
-	unifScale = glGetUniformLocation(shaderProgram, "scale");
-	if (unifScale == -1)
-	{
-		std::cout << "could not bind uniform scale" << std::endl;
-		return;
-	}
+	InitUniform(unifTexture, "textureData");
+	InitUniform(unifRotate, "rotate");
+	InitUniform(unifMove, "move");
+	InitUniform(unifScale, "scale");
+	InitUniform(Unif_transform_viewPosition, "viewPosition");
+	InitUniform(Unif_material_emission, "material.emission");
+	InitUniform(Unif_material_ambient, "material.ambient");
+	InitUniform(Unif_material_diffuse, "material.diffuse");
+	InitUniform(Unif_material_specular, "material.specular");
+	InitUniform(Unif_material_shininess, "material.shininess");
+	InitUniform(Unif_light_ambient, "light.ambient");
+	InitUniform(Unif_light_diffuse, "light.diffuse");
+	InitUniform(Unif_light_specular, "light.specular");
+	InitUniform(Unif_light_direction, "light.direction");
 
 	checkOpenGLerror();
 }
@@ -167,6 +183,7 @@ void InitTexture()
 	const char* road = "textures/road.png";
 	const char* bus = "textures/bus2.png";
 	const char* grass = "textures/grass.png";
+	const char* sky = "textures/sky.jpg";
 	if (!busTextureData.loadFromFile(bus))
 	{
 		std::cout << "could not load texture bus";
@@ -182,9 +199,15 @@ void InitTexture()
 		std::cout << "could not load texture grass";
 		return;
 	}
+	if (!skyTextureData.loadFromFile(sky))
+	{
+		std::cout << "could not load texture sky";
+		return;
+	}
 	roadTextureHandle = roadTextureData.getNativeHandle();
 	busTextureHandle = busTextureData.getNativeHandle();
-	busTextureHandle = grassTextureData.getNativeHandle();
+	grassTextureHandle = grassTextureData.getNativeHandle();
+	skyTextureHandle = skyTextureData.getNativeHandle();
 }
 
 

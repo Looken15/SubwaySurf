@@ -8,6 +8,15 @@ const char* VertexShaderSource = R"(
 	uniform vec3 move;
 	uniform vec3 scale;
 
+	uniform vec3 viewPosition;
+
+	uniform struct PointLight {
+		vec3 direction;
+		vec4 ambient;
+		vec4 diffuse;
+		vec4 specular;
+	} light;
+
     in vec3 coord;
 	in vec2 texcoord;
 	in vec3 normal;
@@ -15,6 +24,8 @@ const char* VertexShaderSource = R"(
 	out Vertex {
 		vec2 texcoord;
 		vec3 normal;
+		vec3 lightDir;
+		vec3 viewDir;
 	} Vert;
 
     void main() {
@@ -32,7 +43,7 @@ const char* VertexShaderSource = R"(
 		float z_angle = rotate[2];
         
         // Поворачиваем вершину
-        vertex *= mat3(
+        mat3 rotate = mat3(
             1, 0, 0,
             0, cos(x_angle), -sin(x_angle),
             0, sin(x_angle), cos(x_angle)
@@ -45,6 +56,8 @@ const char* VertexShaderSource = R"(
 			sin(z_angle), cos(z_angle), 0,
 			0, 0, 1
 		);	
+
+		vertex *= rotate;
 
 		float x_move = move[0];
         float y_move = move[1];
@@ -67,7 +80,10 @@ const char* VertexShaderSource = R"(
 					0, 0, -1/c, 1);
 
 		gl_Position = vec4(vert.xy, last_z * vert[3] / 100, vert[3]);
+
 		Vert.texcoord = texcoord;
-		Vert.normal = normal;
+		Vert.normal = normal * rotate;
+		Vert.lightDir = light.direction;
+		Vert.viewDir = viewPosition - vec3(vert);
     }
 )";
